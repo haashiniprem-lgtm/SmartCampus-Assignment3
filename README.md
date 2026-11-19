@@ -22,3 +22,6 @@ Both backend instances share PostgreSQL and its persistent named volume.
 5. Open /health on ports 5051 and 5052 to see the responding instance.
 
 Triage uses deterministic keyword rules, not a trained AI model. Use synthetic data only. No measured 300-user capacity is claimed.
+
+## Feature Update
+Facility booking and maintenance tracking are supported.
