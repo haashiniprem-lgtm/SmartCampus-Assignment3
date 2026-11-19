@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: campusdb
+      POSTGRES_USER: campus
+      POSTGRES_PASSWORD: campus123
+    volumes:
+      - campus_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus -d campusdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+  web1:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://campus:campus123@db:5432/campusdb
+    ports: ["5051:5000"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+  web2:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://campus:campus123@db:5432/campusdb
+    ports: ["5052:5000"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  campus_data:
